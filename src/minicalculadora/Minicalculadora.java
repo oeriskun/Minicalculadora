@@ -28,22 +28,28 @@ public class Minicalculadora extends javax.swing.JFrame {
     private void initComponents() {
 
         txfNum1 = new javax.swing.JTextField();
-        cmbOperacion = new javax.swing.JComboBox();
+        comboBox = new javax.swing.JComboBox();
         txfNum2 = new javax.swing.JTextField();
-        btnIgual = new javax.swing.JButton();
+        boton = new javax.swing.JButton();
         txfResultado = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Mini Calculadora");
 
         txfNum1.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txfNum1.setText("0");
 
-        cmbOperacion.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "+", "-", "*", "/" }));
+        comboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "+", "-", "*", "/" }));
 
         txfNum2.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txfNum2.setText("0");
 
-        btnIgual.setText("=");
+        boton.setText("=");
+        boton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calcular(evt);
+            }
+        });
 
         txfResultado.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         txfResultado.setText("0");
@@ -53,33 +59,69 @@ public class Minicalculadora extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
+                .addGap(26, 26, 26)
                 .addComponent(txfNum1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cmbOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txfNum2, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnIgual)
+                .addComponent(boton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txfResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addComponent(txfResultado, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(23, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addGap(63, 63, 63)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txfNum2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnIgual)
+                    .addComponent(boton)
                     .addComponent(txfNum1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txfResultado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void calcular(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calcular
+        Numero n1 = new Numero(txfNum1.getText(), ',');
+        Numero n2 = new Numero(txfNum2.getText(), ',');
+        double num1 = n1.getNumero();
+        double num2 = n2.getNumero();
+        double resul = 0;
+        if (num1 == Double.MAX_VALUE || num2 == Double.MAX_VALUE) {
+            txfResultado.setText("error");
+        } else {
+            String operacion = (String) comboBox.getSelectedItem();
+            switch (operacion) {
+                case "+":
+                    resul = num1 + num2;
+                    break;
+                case "-":
+                    resul = num1 - num2;
+                    break;
+                case "*":
+                    resul = num1 * num2;
+                    break;
+                case "/":
+                    if (num2 == 0) {
+                        resul = Double.MAX_VALUE;
+                    } else {
+                        resul = num1 / num2;
+                    }
+            }
+            if (resul == Double.MAX_VALUE) {
+                txfResultado.setText("error");
+            } else {
+                Numero resultado = new Numero(resul);
+                txfResultado.setText(resultado.toString());
+            }
+        }
+    }//GEN-LAST:event_calcular
 
     /**
      * @param args the command line arguments
@@ -117,8 +159,8 @@ public class Minicalculadora extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnIgual;
-    private javax.swing.JComboBox cmbOperacion;
+    private javax.swing.JButton boton;
+    private javax.swing.JComboBox comboBox;
     private javax.swing.JTextField txfNum1;
     private javax.swing.JTextField txfNum2;
     private javax.swing.JTextField txfResultado;
